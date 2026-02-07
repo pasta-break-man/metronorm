@@ -1,0 +1,14 @@
+.canvas{
+    margin  : auto;
+    width   : 1000px;
+    height  : 500px;
+    background  : #000000;
+}
+
+.gamen{
+    width: 350px;
+    height: 200px;
+    background-color: #9a97ac;
+    border-radius: 15px;
+    object-position: 100%;
+}
