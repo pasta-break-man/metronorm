@@ -1,8 +1,9 @@
 .canvas{
     margin  : auto;
-    width   : 1000px;
+    width   : 800px;
     height  : 500px;
     background  : #000000;
+    padding-top: 5px;
 }
 
 .gamen{
@@ -10,5 +11,21 @@
     height: 200px;
     background-color: #9a97ac;
     border-radius: 15px;
-    object-position: 100%;
+    margin: 5% auto 5% 5%;
+}
+
+.playsrightnormal{
+    width: 40px;
+    height: 50px;
+    background-color: #9a97ac;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+    margin: 10% auto auto 40%;
+}
+
+.playsleftnormal{
+    width: 40px;
+    height: 50px;
+    background-color: #9a97ac;
+    clip-path: polygon(0 50%, 100% 0, 100% 100%);
+    margin: auto 10% 70% 10%;
 }
