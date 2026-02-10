@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import BackCanvas from './components/canvas'
+import BackCanvas from './components/Canvas'
 
 function App() {
   return (
