@@ -18,11 +18,11 @@ class Toggle extends Component{
 
     render(){
         return(
-            <div>
+            <>
                 <UpToggle speed={this.state.speed} onUp={this.handleUp}/>
                 <DownToggle speed={this.state.speed} onDown={this.handleDown}/>
                 <GamenPrevew speed={this.state.speed}/>
-            </div>
+            </> //ラップしないことにより，親子関係を正しくできるっぽい
         );
     }
 }
@@ -46,7 +46,9 @@ export function DownToggle(props){
 export function GamenPrevew(props){
     return(
         <div className='gamen'>
-            <p speed={props.speed}/>
+            <h1 speed={props.speed}>speed: {props.speed}</h1>
         </div>
     )
 }
+
+export default Toggle;
