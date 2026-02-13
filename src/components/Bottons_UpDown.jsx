@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import './components.css';
 
 class Toggle extends Component{
-    state = {speed: 0};
+    state = {speed: 0, onoff: true};
 
     handleUp = () => {
         this.setState(prev => ({
@@ -16,12 +16,19 @@ class Toggle extends Component{
         }));
     };
 
+    Getonoff = () => {
+        this.setState(prev => ({
+            onoff: !prev.onoff
+        }))
+    }
+
     render(){
         return(
             <>
-                <UpToggle speed={this.state.speed} onUp={this.handleUp}/>
-                <DownToggle speed={this.state.speed} onDown={this.handleDown}/>
+                <UpToggle onUp={this.handleUp}/>
+                <DownToggle onDown={this.handleDown}/>
                 <GamenPrevew speed={this.state.speed}/>
+                <On_Off_swich swich={this.Getonoff} onoff={this.state.onoff}/>
             </> //ラップしないことにより，親子関係を正しくできるっぽい
         );
     }
@@ -47,6 +54,14 @@ export function GamenPrevew(props){
     return(
         <div className='gamen'>
             <h1 speed={props.speed}>speed: {props.speed}</h1>
+        </div>
+    )
+}
+
+export function On_Off_swich({swich, onoff}){
+    return(
+        <div className='playmetro'>
+            <button onClick={swich}>{onoff ? 'ON': 'OFF'}</button>
         </div>
     )
 }
