@@ -45,3 +45,20 @@
   background: transparent;
   cursor: pointer;
 }
+
+.playmetro{
+    width: 50px;
+    height: 50px;
+    background-color: #9a97ac;
+    border-radius: 50%;
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+}
+
+.playmetro button{
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
