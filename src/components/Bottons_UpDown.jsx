@@ -1,10 +1,11 @@
-import React, {Component, useEffect, useState} from "react";
+import React, {Component, useEffect, useState, useRef} from "react";
 import './components.css';
 import Sound from './beat_440.wav';
+import HeadSound from './beat_880.wav';
 import useSound from 'use-sound';
 
 class Toggle extends Component{
-    state = {speed: 60, onoff: false, show: false};
+    state = {speed: 60, onoff: false, show: false, tempo: 4};
 
     handleUp = () => {
         this.setState(prev => ({
@@ -30,37 +31,58 @@ class Toggle extends Component{
         }))
     }
 
+    SetTmpo = () => {
+        this.setState(prev => ({
+            tempo: prev.tempo+1
+        }))
+    }
     render(){
         return(
             <>
                 <UpToggle onUp={this.handleUp}/>
                 <DownToggle onDown={this.handleDown}/>
-                <GamenPrevew speed={this.state.speed} onspeedChange={(n) => this.setState({speed: n})} show={this.state.show} mstate={this.Modalstate}/>
+                <GamenPrevew speed={this.state.speed} 
+                onspeedChange={(n) => this.setState({speed: n})} show={this.state.show} mstate={this.Modalstate}/>
                 <On_Off_swich swich={this.Getonoff} onoff={this.state.onoff}/>
-                <Roop_wav isOn={this.state.onoff} speed={this.state.speed}/>
+                <Roop_wav isOn={this.state.onoff} speed={this.state.speed} tempo={this.state.tempo}/>
+                <Tempo_change tempo={this.state.tempo} 
+                onTempoChange={(n) => this.setState({tempo: n})}/>
+                <Tempo_show tempo={this.state.tempo}/>
             </> //ラップしないことにより，親子関係を正しくできるっぽい
         );
     }
 }
 
-function Roop_wav({isOn, speed}){
-    const [play, {stop}] = useSound(Sound, {interrupt: true});
+function Roop_wav({isOn, speed, tempo}){
+    const [playhead, {stop: stophead}] = useSound(HeadSound, {interrupt: true});
+    const [play, {stop: stopather}] = useSound(Sound, {interrupt: true});
+    const TempoCount = useRef(0);
+
     useEffect(() => {
-        if(!isOn || speed <= 0){
-            stop?.();
+        if(!isOn || speed <= 0 || tempo <= 0){
+            stopather?.();
+            stophead?.();
+            TempoCount.current = 0;
             return;
         }
 
         const bpm = 60000 / speed;
         const id = setInterval(() => {
-            play();
+            if(TempoCount.current === 0){
+                playhead();
+            }else{
+                play();
+            }
+            
+        TempoCount.current = (TempoCount.current + 1) % tempo;
         }, bpm);
 
         return() => clearInterval(id);
-    }, [isOn, speed, play, stop]);
+    }, [isOn, speed, play, stopather, playhead, stophead, tempo]);
     
     return null;
 }
+
 
 function Text_in({speed, onspeedChange}){
     const [text, setText] = useState("");
@@ -81,7 +103,7 @@ function Text_in({speed, onspeedChange}){
             onChange={handleChange}
             placeholder="数字を入力して"
             />
-            <p>BPMを{text}に設定しました！</p>
+            <p>BPM: </p>
         </div>
     )
 }
@@ -121,8 +143,8 @@ export function On_Off_swich({swich, onoff}){
 
 function Modal_set({show, mstate, onspeedChange, speed}){
     return(
-        <div>
-            <button onClick={mstate}>click</button>
+        <div className="bpmbutton">
+            <button onClick={mstate}></button>
             {show && (
                 <div className="overlay">
                     <div className="content">
@@ -131,6 +153,30 @@ function Modal_set({show, mstate, onspeedChange, speed}){
                     </div>
                 </div>
             )}
+        </div>
+    )
+}
+
+function Tempo_change({tempo, onTempoChange}){
+    const TempoUp = () => onTempoChange(tempo + 1);
+    const TempoDown = () => onTempoChange(tempo - 1);
+
+    return(
+        <>
+            <div className="tempoup">
+                <button onClick={TempoUp}>+</button>
+            </div>
+            <div className="tempodown">
+                <button onClick={TempoDown}>-</button>
+            </div>
+        </>
+    )
+}
+
+function Tempo_show(props){
+    return(
+        <div className="tempogamen">
+            <h1>Tempo: {props.tempo}</h1>
         </div>
     )
 }
